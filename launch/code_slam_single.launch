@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <!-- Environment variables from single-test.yaml -->
+  <arg name="robot_name" default="Alpha" />
+  <arg name="robot_names_config" default="robot_names" />
+  <arg name="log_dir" default="/workspaces/src/code-logs/" />
+  <arg name="num_robots" default="1" />
+  <arg name="bow_skip_num" default="1" />
+  <arg name="left_cam_topic" default="/Alpha/left_camera/image_raw" />
+  <arg name="right_cam_topic" default="/Alpha/right_camera/image_raw" />
+  <arg name="imu_topic" default="/Alpha/imu/data" />
+  <arg name="vio_config_type" default="S3EAlphaMonoXfeat" />
+  <arg name="external_odom_topic" default="/$(arg robot_name)/jackal_velocity_controller/odom"/>
+  <arg name="use_external_odom"       default="false"/>
+
+  <!-- Robot configuration -->
+  <arg name="robot_id" default="0" />
+  <arg name="dataset_name" default="Euroc" />
+
+  <!-- Simulation time -->
+  <param name="use_sim_time" value="false" />
+
+  <!-- Launch Kimera Distributed -->
+  <include file="$(find kimera_distributed)/launch/kimera_distributed.launch">
+    <arg name="robot_id" value="$(arg robot_id)" />
+    <arg name="robot_name" value="$(arg robot_name)" />
+    <arg name="robot_names_config" value="$(arg robot_names_config)" />
+    <arg name="num_robots" value="$(arg num_robots)" />
+    <arg name="dataset_name" value="$(arg dataset_name)" />
+    <arg name="log_output_path" value="$(arg log_dir)/$(arg robot_name)/distributed/" />
+    <arg name="verbosity" value="0" />
+    <arg name="should_use_sim_time" value="false" />
+    <arg name="bow_skip_num" value="$(arg bow_skip_num)" />
+    <!-- turn off loop sync, CBS doesn't sync loops -->
+    <!-- <arg name="loop_sync_sleep_time" value="5" />  -->
+    <!-- <arg name="debug" value="true" /> -->
+  </include>
+
+  <!-- Launch DPGO -->
+  <include file="$(find kimera_distributed)/launch/dpgo.launch">
+    <arg name="robot_id" value="$(arg robot_id)" />
+    <arg name="robot_name" value="$(arg robot_name)" />
+    <arg name="robot_names_config" value="$(arg robot_names_config)" />
+    <arg name="num_robots" value="$(arg num_robots)" />
+    <arg name="dataset_name" value="$(arg dataset_name)" />
+    <arg name="multi_master" value="false" />
+    <arg name="log_output_path" value="$(arg log_dir)/$(arg robot_name)/dpgo/" />
+    <arg name="solver_type" value="cbs" />
+    <arg name="debug" value="0" />
+  </include>
+
+  <!-- Launch Kimera VIO -->
+  <include file="$(find kimera_multi)/launch/kimera_vio.launch">
+    <arg name="robot_name" value="$(arg robot_name)" />
+    <arg name="robot_id" value="$(arg robot_id)" />
+    <arg name="lcd_no_optimize" value="true" />
+    <arg name="lcd_no_detection" value="true" />
+    <arg name="should_use_sim_time" value="false" />
+    <arg name="left_cam_topic" value="$(arg left_cam_topic)" />
+    <arg name="right_cam_topic" value="$(arg right_cam_topic)" />
+    <arg name="imu_topic" value="$(arg imu_topic)" />
+    <arg name="use_lcd" value="2" />
+    <arg name="config_type" value="$(arg vio_config_type)" />
+    <arg name="use_external_odom"       default="$(arg use_external_odom)"/>
+    <arg name="external_odom_topic"     default="$(arg external_odom_topic)"/>
+  </include>
+
+</launch>

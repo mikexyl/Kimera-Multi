@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <!-- Arguments for bag file -->
+  <arg name="bag_file" default="/path/to/rosbag.bag" />
+  
+  <!-- Group namespace -->
+  <arg name="namespace" default="robot" />
+  
+  <!-- Playback options -->
+  <arg name="rate" default="1.0" />
+  <arg name="start_time" default="0" />
+  <arg name="duration" default="" />
+  <arg name="loop" default="false" />
+  <arg name="clock" default="true" />
+  
+  <!-- Original topic names in the bag file -->
+  <arg name="camera_left_topic" default="/camera_left/image_raw" />
+  <arg name="camera_right_topic" default="/camera_right/image_raw" />
+  <arg name="imu_topic" default="/gnss/imu" />
+  
+  <!-- Enable simulation time -->
+  <arg name="use_sim_time" value="true"/>
+  <param name="use_sim_time" value="$(arg use_sim_time)"/>
+  
+  <!-- Rosbag player with manual topic remapping -->
+  <node pkg="rosbag" type="play" name="rosbag_player_$(arg namespace)" output="screen" 
+        args="--rate=$(arg rate) --start=$(arg start_time) $(arg bag_file) --quiet">
+    <param name="loop" value="$(arg loop)" if="$(arg loop)"/>
+    <remap from="$(arg camera_left_topic)" to="/$(arg namespace)/$(arg camera_left_topic)" />
+    <remap from="$(arg camera_right_topic)" to="/$(arg namespace)/$(arg camera_right_topic)" />
+    <remap from="$(arg imu_topic)" to="/$(arg namespace)/$(arg imu_topic)" />
+  </node>
+
+</launch>

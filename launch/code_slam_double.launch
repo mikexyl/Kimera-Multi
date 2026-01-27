@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <!-- Play bag file -->
+  <arg name="bag_file" default="/datasets_extra/S3E/Square2/square2.bag" />
+
+  <node pkg="rosbag" type="play" name="rosbag_player_alpha" output="screen" 
+        args="--rate 1.0 --loop $(arg bag_file) --quiet --clock">
+  </node>
+  
+  <include file="$(find kimera_multi)/launch/code_slam_single.launch">
+    <arg name="robot_name" value="Alpha" />
+    <arg name="robot_id" value="0" />
+    <arg name="log_dir" value="/workspaces/src/deslam_logs/s3e" />
+    <arg name="num_robots" value="2" />
+    <arg name="dataset_name" value="Alpha" />
+    <arg name="vio_config_type" value="S3EAlphaStereoXfeat" />
+    <arg name="left_cam_topic" value="/Alpha/left_camera" />
+    <arg name="right_cam_topic" value="/Alpha/right_camera" />
+    <arg name="imu_topic" value="/Alpha/imu/data" />
+    <arg name="robot_names_config" value="robot_names" />
+  </include>
+
+  <include file="$(find kimera_multi)/launch/code_slam_single.launch">
+    <arg name="robot_name" value="Bob" />
+    <arg name="robot_id" value="1" />
+    <arg name="log_dir" value="/workspaces/src/deslam_logs/s3e" />
+    <arg name="num_robots" value="2" />
+    <arg name="dataset_name" value="Alpha" />
+    <arg name="vio_config_type" value="S3EBobStereoXfeat" />
+    <arg name="left_cam_topic" value="/Bob/left_camera" />
+    <arg name="right_cam_topic" value="/Bob/right_camera" />
+    <arg name="imu_topic" value="/Bob/imu/data" />
+    <arg name="robot_names_config" value="robot_names" />
+  </include>
+
+</launch>

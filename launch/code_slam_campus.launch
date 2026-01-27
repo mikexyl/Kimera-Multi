@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <!-- Arguments for bag files -->
+  <arg name="bag_file_hathor" default="/datasets_extra/campus/10_14_hathor.bag" />
+  <arg name="bag_file_sparkal1" default="/datasets_extra/campus/10_14_sparkal1.bag" />
+  <arg name="bag_file_sparkal2" default="/datasets_extra/campus/10_14_sparkal2.bag" />
+  <arg name="bag_file_thoth" default="/datasets_extra/campus/10_14_thoth.bag" />
+  <arg name="rate" default="0.7" />
+  <arg name="log_dir" default="/workspaces/src/code-logs/campus/" />
+
+  <arg name="use_external_odom"       default="true"/>
+
+  <!-- play bag files -->
+  <node name="play_bag_hathor" pkg="rosbag" type="play" args="$(arg bag_file_hathor) -r $(arg rate) -s 65" />
+  <node name="play_bag_sparkal1" pkg="rosbag" type="play" args="$(arg bag_file_sparkal1) -r $(arg rate) -s 20" />
+  <node name="play_bag_sparkal2" pkg="rosbag" type="play" args="$(arg bag_file_sparkal2) -r $(arg rate) -s 20" />
+  <node name="play_bag_thoth" pkg="rosbag" type="play" args="$(arg bag_file_thoth) -r $(arg rate) -s 20" />
+
+  <include file="$(find kimera_multi)/launch/code_slam_single.launch">
+    <arg name="robot_name" value="hathor" />
+    <arg name="robot_id" value="0" />
+    <arg name="log_dir" value="$(arg log_dir)" />
+    <arg name="num_robots" value="4" />
+    <arg name="dataset_name" value="Campus" />
+    <arg name="vio_config_type" value="D455" />
+    <arg name="left_cam_topic" value="/hathor/forward/infra1/image_rect_raw" />
+    <arg name="right_cam_topic" value="/hathor/forward/infra2/image_rect_raw" />
+    <arg name="imu_topic" value="/hathor/forward/imu" />
+    <arg name="robot_names_config" value="robot_names_campus" />
+    <arg name="use_external_odom"       default="$(arg use_external_odom)"/>
+    <arg name="external_odom_topic"     default="/hathor/jackal_velocity_controller/odom"/>
+  </include>
+
+  <include file="$(find kimera_multi)/launch/code_slam_single.launch">
+    <arg name="robot_name" value="sparkal1" />
+    <arg name="robot_id" value="1" />
+    <arg name="log_dir" value="$(arg log_dir)" />
+    <arg name="num_robots" value="4" />
+    <arg name="dataset_name" value="Campus" />
+    <arg name="vio_config_type" value="D455" />
+    <arg name="left_cam_topic" value="/sparkal1/forward/infra1/image_rect_raw" />
+    <arg name="right_cam_topic" value="/sparkal1/forward/infra2/image_rect_raw" />
+    <arg name="imu_topic" value="/sparkal1/forward/imu" />
+    <arg name="robot_names_config" value="robot_names_campus" />
+    <arg name="use_external_odom"       default="$(arg use_external_odom)"/>
+    <arg name="external_odom_topic"     default="/sparkal1/jackal_velocity_controller/odom"/>
+  </include>
+
+  <include file="$(find kimera_multi)/launch/code_slam_single.launch">
+    <arg name="robot_name" value="sparkal2" />
+    <arg name="robot_id" value="2" />
+    <arg name="log_dir" value="$(arg log_dir)" />
+    <arg name="num_robots" value="4" />
+    <arg name="dataset_name" value="Campus" />
+    <arg name="vio_config_type" value="D455" />
+    <arg name="left_cam_topic" value="/sparkal2/forward/infra1/image_rect_raw" />
+    <arg name="right_cam_topic" value="/sparkal2/forward/infra2/image_rect_raw" />
+    <arg name="imu_topic" value="/sparkal2/forward/imu" />
+    <arg name="robot_names_config" value="robot_names_campus" />
+    <arg name="use_external_odom"       default="$(arg use_external_odom)"/>
+    <arg name="external_odom_topic"     default="/sparkal2/jackal_velocity_controller/odom"/>
+  </include>
+
+  <include file="$(find kimera_multi)/launch/code_slam_single.launch">
+    <arg name="robot_name" value="thoth" />
+    <arg name="robot_id" value="3" />
+    <arg name="log_dir" value="$(arg log_dir)" />
+    <arg name="num_robots" value="4" />
+    <arg name="dataset_name" value="Campus" />
+    <arg name="vio_config_type" value="D455" />
+    <arg name="left_cam_topic" value="/thoth/forward/infra1/image_rect_raw" />
+    <arg name="right_cam_topic" value="/thoth/forward/infra2/image_rect_raw" />
+    <arg name="imu_topic" value="/thoth/forward/imu" />
+    <arg name="robot_names_config" value="robot_names_campus" />
+    <arg name="use_external_odom"       default="$(arg use_external_odom)"/>
+    <arg name="external_odom_topic"     default="/thoth/jackal_velocity_controller/odom"/>
+  </include>
+
+</launch>
