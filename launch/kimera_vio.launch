@@ -33,6 +33,7 @@
   <arg name="imu_topic" default="/$(arg robot_name)/imu/data" />
   <!-- Only used when parsing a rosbag -->
   <arg name="external_odom_topic" default="/$(arg robot_name)/jackal_velocity_controller/odom" />
+  <arg name="output" value="log" />
 
   <group ns="$(arg robot_name)">
 

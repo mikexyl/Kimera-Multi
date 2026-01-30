@@ -3,57 +3,58 @@
   <!-- Arguments for bag files -->
   <arg name="bag_file_a1" default="/datasets_extra/graco/aerial-01-40m.bag" />
   <arg name="bag_file_a2" default="/datasets_extra/graco/aerial-02-20m.bag" />
-  <arg name="bag_file_a3" default="/datasets_extra/graco/aerial-03-20m.bag" />
-  <arg name="bag_file_a4" default="/datasets_extra/graco/aerial-04-40m.bag" />
+  <arg name="bag_file_a3" default="/datasets_extra/graco/aerial-06-20m.bag" />
+  <arg name="bag_file_a4" default="/datasets_extra/graco/aerial-06-20m.bag" />
   <arg name="bag_file_a6" default="/datasets_extra/graco/aerial-06-20m.bag" />
   <arg name="bag_file_a7" default="/datasets_extra/graco/aerial-07-25m.bag" />
   <arg name="bag_file_a5" default="/datasets_extra/graco/aerial-05-40m.bag" />
   <arg name="bag_file_a8" default="/datasets_extra/graco/aerial-08-25m.bag" />
-  <arg name="rate" default="0.5" />
+  <arg name="rate" default="1.0" />
 
   <arg name="number_of_robots" default="2" />
-  <arg name="robot_names_config" default="robot_names_graco_34" />
+  <arg name="robot_names_config" default="robot_names_graco_12" />
+  <arg name="log_dir" default="/workspaces/src/code-logs/a12" />
 
   <!-- Play bag file for a1 with namespace -->
   <include file="$(find kimera_multi)/launch/play_bag_graco.launch">
-    <arg name="bag_file" value="$(arg bag_file_a3)" />
-    <arg name="namespace" value="a3" />
+    <arg name="bag_file" value="$(arg bag_file_a1)" />
+    <arg name="namespace" value="a1" />
     <arg name="rate" value="$(arg rate)" />
     <arg name="start_time" value="0.0" />
   </include>
 
   <!-- Play bag file for a2 with namespace -->
   <include file="$(find kimera_multi)/launch/play_bag_graco.launch">
-    <arg name="bag_file" value="$(arg bag_file_a4)" />
-    <arg name="namespace" value="a4" />
+    <arg name="bag_file" value="$(arg bag_file_a2)" />
+    <arg name="namespace" value="a2" />
     <arg name="rate" value="$(arg rate)" />
     <arg name="start_time" value="0.0" />
   </include>
 
   <include file="$(find kimera_multi)/launch/code_slam_single.launch">
-    <arg name="robot_name" value="a3" />
+    <arg name="robot_name" value="a1" />
     <arg name="robot_id" value="0" />
-    <arg name="log_dir" value="/workspaces/src/deslam_logs/graco" />
     <arg name="num_robots" value="$(arg number_of_robots)" />
     <arg name="dataset_name" value="GrAco" />
     <arg name="vio_config_type" value="GrAcoStereoXfeat" />
-    <arg name="left_cam_topic" value="/a3/camera_left/image_raw" />
-    <arg name="right_cam_topic" value="/a3/camera_right/image_raw" />
-    <arg name="imu_topic" value="/a3/gnss/imu" />
+    <arg name="left_cam_topic" value="/a1/camera_left/image_raw" />
+    <arg name="right_cam_topic" value="/a1/camera_right/image_raw" />
+    <arg name="imu_topic" value="/a1/gnss/imu" />
     <arg name="robot_names_config" value="$(arg robot_names_config)" />
+    <arg name="log_dir" value="$(arg log_dir)" />
   </include>
 
   <include file="$(find kimera_multi)/launch/code_slam_single.launch">
-    <arg name="robot_name" value="a4" />
+    <arg name="robot_name" value="a2" />
     <arg name="robot_id" value="1" />
-    <arg name="log_dir" value="/workspaces/src/deslam_logs/graco" />
     <arg name="num_robots" value="$(arg number_of_robots)" />
     <arg name="dataset_name" value="GrAco" />
     <arg name="vio_config_type" value="GrAcoStereoXfeat" />
-    <arg name="left_cam_topic" value="/a4/camera_left/image_raw" />
-    <arg name="right_cam_topic" value="/a4/camera_right/image_raw" />
-    <arg name="imu_topic" value="/a4/gnss/imu" />
+    <arg name="left_cam_topic" value="/a2/camera_left/image_raw" />
+    <arg name="right_cam_topic" value="/a2/camera_right/image_raw" />
+    <arg name="imu_topic" value="/a2/gnss/imu" />
     <arg name="robot_names_config" value="$(arg robot_names_config)" />
+    <arg name="log_dir" value="$(arg log_dir)" />
   </include>
 
 </launch>

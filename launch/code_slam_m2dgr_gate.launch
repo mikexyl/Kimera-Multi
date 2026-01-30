@@ -4,7 +4,7 @@
   <arg name="bag_file_g1" default="/datasets_extra/m2dgr/gate_01.bag" />
   <arg name="bag_file_g2" default="/datasets_extra/m2dgr/gate_02.bag" />
   <arg name="bag_file_g3" default="/datasets_extra/m2dgr/gate_03.bag" />
-  <arg name="rate" default="0.5" />
+  <arg name="rate" default="0.8" />
   <arg name="log_dir" default="/workspaces/src/code-logs/gate/" />
 
   <!-- Play bag file for a6 with namespace -->

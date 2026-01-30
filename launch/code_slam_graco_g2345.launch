@@ -8,7 +8,7 @@
   <arg name="bag_file_g5" default="/datasets_extra/graco/ground-05.bag" />
   <arg name="bag_file_g6" default="/datasets_extra/graco/ground-06.bag" />
   <arg name="rate" default="0.5" />
-  <arg name="log_dir" default="/workspaces/src/code-logs/2345/" />
+  <arg name="log_dir" default="/workspaces/src/code-logs/g2345/" />
 
   <arg name="number_of_robots" default="4" />
   <arg name="robot_names_config" default="robot_names_graco_gnd_2345" />

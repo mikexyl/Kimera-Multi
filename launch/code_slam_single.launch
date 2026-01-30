@@ -12,6 +12,10 @@
   <arg name="vio_config_type" default="S3EAlphaMonoXfeat" />
   <arg name="external_odom_topic" default="/$(arg robot_name)/jackal_velocity_controller/odom"/>
   <arg name="use_external_odom"       default="false"/>
+  <arg name="pcm" default="false" />
+  <arg name="d_reset" default="0.5" />
+  <arg name="contract_alpha" default="0.5" /> 
+  <arg name="loop_rate" default="1" />
 
   <!-- Robot configuration -->
   <arg name="robot_id" default="0" />
@@ -36,19 +40,6 @@
     <!-- <arg name="debug" value="true" /> -->
   </include>
 
-  <!-- Launch DPGO -->
-  <include file="$(find kimera_distributed)/launch/dpgo.launch">
-    <arg name="robot_id" value="$(arg robot_id)" />
-    <arg name="robot_name" value="$(arg robot_name)" />
-    <arg name="robot_names_config" value="$(arg robot_names_config)" />
-    <arg name="num_robots" value="$(arg num_robots)" />
-    <arg name="dataset_name" value="$(arg dataset_name)" />
-    <arg name="multi_master" value="false" />
-    <arg name="log_output_path" value="$(arg log_dir)/$(arg robot_name)/dpgo/" />
-    <arg name="solver_type" value="cbs" />
-    <arg name="debug" value="0" />
-  </include>
-
   <!-- Launch Kimera VIO -->
   <include file="$(find kimera_multi)/launch/kimera_vio.launch">
     <arg name="robot_name" value="$(arg robot_name)" />
@@ -64,5 +55,19 @@
     <arg name="use_external_odom"       default="$(arg use_external_odom)"/>
     <arg name="external_odom_topic"     default="$(arg external_odom_topic)"/>
   </include>
+
+  <group ns="cbs">
+    <node pkg="cbs_ros" type="cbs_ros_node" name="cbs_ros_node_$(arg robot_name)" output="screen">
+        <param name="robot_name" value="$(arg robot_name)" />
+        <param name="robot_id" value="$(arg robot_id)" />
+        <param name="num_robots" value="$(arg num_robots)" />
+        <param name="enable_gkcm" value="$(arg pcm)" />
+        <param name="d_reset" value="$(arg d_reset)" />
+        <param name="contract_alpha" value="$(arg contract_alpha)" />
+        <param name="loop_rate" value="$(arg loop_rate)" />
+        <param name="log_dir" value="$(arg log_dir)" />
+        <remap from="/cbs_ros_$(arg robot_id)/pose_graph" to="/$(arg robot_name)/kimera_distributed/pose_graph"/>
+    </node>
+  </group>
 
 </launch>
